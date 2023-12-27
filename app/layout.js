@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import  AuthSessionProvider  from '@/lib/AuthSessionProvider'
-
+import Nav from '@/components/Nav'
+import LayoutDesign from '@/components/LayoutDesign'
 
 export const metadata = {
   title: 'Create Next App',
@@ -11,7 +12,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <AuthSessionProvider>
-      <body>{children}</body>
+      <body>
+        <LayoutDesign>
+        {children}
+        </LayoutDesign>
+        </body>
 
       </AuthSessionProvider>
     </html>
