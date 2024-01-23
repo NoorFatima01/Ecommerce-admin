@@ -70,9 +70,11 @@ export default function ProductForm({
       if (res.ok) {
         const data = await res.json();
         console.log("data", data);
-        setImages(oldImages => {
-          return [...oldImages, data.fileName];
-        })
+        settingImages(data.fileName);
+        // const data = await res.json();
+        // console.log("data", data);
+        // setImages(prevImages => [...prevImages, data.fileName]);
+          console.log("images", images);
         setIsUploading(false);
       } else {
         console.error("File upload failed:", res.statusText);
@@ -82,7 +84,12 @@ export default function ProductForm({
     }
   }
 
-  console.log("images", images);
+  async function settingImages(newImage) {
+    console.log("newImage", newImage);
+    setImages(prevImages => [...prevImages, newImage]);
+    console.log("now the images are images", images);
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <div>

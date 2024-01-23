@@ -7,9 +7,9 @@ export async function GET(req, {params}) {
   try{
     await connectDB();
    const id = params.id;
-    console.log("This is the id:", JSON.stringify(id, null, 2));
+    // console.log("This is the id:", JSON.stringify(id, null, 2));
     const product = await Product.findOne({_id: id});
-    console.log("This is the product:", JSON.stringify(product, null, 2));
+    // console.log("This is the product:", JSON.stringify(product, null, 2));
     return NextResponse.json(product, { status: 200 });
   }
   catch(error){
@@ -22,7 +22,7 @@ export async function PUT(req, res) {
     try{
       await connectDB();
       const { title, description, price,images,_id} = await req.json();
-      console.log("data: "+ title+description);
+      // console.log("data: "+ title+description);
       const productDoc = await Product.updateOne(
         { _id },
         {
