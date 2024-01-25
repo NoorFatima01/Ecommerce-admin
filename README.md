@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Client Side Data Fetching
+Currently all the data is being fetched on the client side via useEffect hook.
 
-## Getting Started
+During client side rendering the api request is made and data is fetched whenever the user loads the page. But this is mostly used for data that *frequently changes*. If the contents of the ecommerce store do not change that frequently we can use other ways to fetch data as well.
 
-First, run the development server:
+There is this thing known as `build-time`. During this time your server compiles your website and whatever HTML it has also called `static HTML pages`, it sends it to the client for rendering. This generation is called `Static Side Generation`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Static Site Generation (SSG)
+`Static Site Generation` is when webpages are pre-rendered and *created in advance instead of on demand*. 
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+It is possible that some data is already fetched by APIs on the server during build time and the server includes that data in the static HTML it sends to the client for rendering as well. This is known as the Static Generation of your site. Most of the time this data that has already been fetched by the apis on the server is the data that does not change frequently. 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+So, instead of making the api requests again and again for data that does not change frequently, the data is loaded on the server and sent to the client one single time. This helps in faster loading time.
 
-## Learn More
+## getStaticProps and getStaticPath
 
-To learn more about Next.js, take a look at the following resources:
+In Nextjs this would be done using `getStaticProps` and `getStaticPath`.
+So, for example if I were to statically generate all the product pages it would involve something as follows:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`getStaticProps` returns `props` that is (in this case) the response from the api then these `props` are passed as props to the `component`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+`getStaticPath` is used along with `getStaticProps`. The 
 
-## Deploy on Vercel
+The url would be `/product/[id] `
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```import axios from 'axios';
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+const YourPage = ({ productInfo }) => {
+  // Your component code here
+
+  return (
+    // Your JSX here
+  );
+};
+
+export async function getStaticPaths() {
+  // Generate paths for all products, (say we have 2 products with id 1 and 2)
+  const paths = ['/product/1', '/product/2']; 
+
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps({ params }) {
+  const id = params.id;
+
+  try {
+    const response = await axios.get(`https://your-api-url/api/products/${id}`);
+    const productInfo = response.data;
+
+    return {
+      props: {
+        productInfo,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return {
+      props: {
+        productInfo: null, // Handle error case as needed
+      },
+    };
+  }
+}
+``````
+
+## Server Side Fetching
+
+Now there is something known as `request time`. This is when the data is requested after the website has been rendered. The request is sent to the server the data is fetched on the server and sent to the client. In Next js, getServerSideProps
