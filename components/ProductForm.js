@@ -3,7 +3,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Img from "next/image";
-import { set } from "mongoose";
 
 export default function ProductForm({
   _id,
@@ -11,6 +10,8 @@ export default function ProductForm({
   description: existingDesc,
   price: existingPrice,
   images: existingImages,
+  category: existingCategory,
+  properties: existingProperties,
 }) {
   const [title, setTitle] = useState(existingTitle || "");
   const [description, setDescription] = useState(existingDesc || "");
@@ -18,6 +19,9 @@ export default function ProductForm({
   const [goToProducts, setGoToProducts] = useState(false);
   const [images, setImages] = useState(existingImages || []);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] =useState(existingCategory || "");
+  const [productProperties, setProductProperties] = useState(existingProperties || []);
   const router = useRouter();
 
   useEffect(() => {
@@ -26,6 +30,12 @@ export default function ProductForm({
     }
   }, [goToProducts, router]);
 
+  useEffect(() => {
+    axios.get("/api/categories").then((res) => {
+      setCategories(res.data);
+    })
+  },[])
+
   async function saveProduct(e) {
     e.preventDefault();
     const data = {
@@ -33,6 +43,8 @@ export default function ProductForm({
       description: description,
       price: price,
       images: images,
+      category: category,
+      properties: productProperties,
     };
     if (_id) {
       //update
@@ -90,6 +102,30 @@ export default function ProductForm({
     console.log("now the images are images", images);
   }
 
+  function changeProductProp(name, value){
+    setProductProperties(prev => {
+      const newProps = [...prev];
+      const propIndex = newProps.findIndex(p => p.name === name);
+      if(propIndex === -1){
+        newProps.push({name, value});
+      }else{
+        newProps[propIndex].value = value;
+      }
+      return newProps;
+    })
+  }
+
+  const properties = [];
+  if(categories.length > 0 && category){
+    let selCatInfo = categories.find((({_id}) => _id === category));
+    properties.push(...selCatInfo.properties);
+    while(selCatInfo?.parent?._id){
+      const parent = categories.find((({_id}) => _id === selCatInfo.parent._id));
+      properties.push(...parent.properties);
+      selCatInfo = parent;
+    }
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <div>
@@ -100,6 +136,32 @@ export default function ProductForm({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+        <label>Category</label>
+        <select value={category} onChange={ev=>setCategory(ev.target.value)}>
+          <option value="0">Uncategorized</option>
+          {categories.length > 0 && categories.map((category) =>(
+            <option key={category._id} value={category._id}>{category.name}</option>
+          ))}
+        </select>
+
+        {properties.length > 0 && (
+          <div>
+            {properties.map((property, index) => (
+              <div key={index}>
+                <label>{property.name}</label>
+                <select value={productProperties[p.name]} onChange={(ev)=>changeProductProp(p.name,ev.target.value)}>
+                  {property.values.map((value, index) => (
+                    <option key={index} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </div>
+        )}
+
+
         <label>Photos</label>
 
         <div className="mb-2">

@@ -21,7 +21,7 @@ export async function GET(req, {params}) {
 export async function PUT(req, res) {
     try{
       await connectDB();
-      const { title, description, price,images,_id} = await req.json();
+      const { title, description, price,images,_id,category,properties} = await req.json();
       // console.log("data: "+ title+description);
       const productDoc = await Product.updateOne(
         { _id },
@@ -31,6 +31,8 @@ export async function PUT(req, res) {
             description,
             price,
             images,
+            category,
+            properties,
           },
         }
       );

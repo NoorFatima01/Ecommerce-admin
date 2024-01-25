@@ -3326,6 +3326,13 @@ react-spinners@^0.13.8:
   resolved "https://registry.yarnpkg.com/react-spinners/-/react-spinners-0.13.8.tgz#5262571be0f745d86bbd49a1e6b49f9f9cb19acc"
   integrity sha512-3e+k56lUkPj0vb5NDXPVFAOkPC//XyhKPJjvcGjyMNPWsBKpplfeyialP74G7H7+It7KzhtET+MvGqbKgAqpZA==
 
+react-sweetalert2@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/react-sweetalert2/-/react-sweetalert2-0.6.0.tgz#b129ca6dfce80dcd2118086287e4545226485976"
+  integrity sha512-4MEWGAJamSfoj56m7MUs7IfBnev9wJYs0RayvoHvxshSQeH62iK0N/EkDiHr3VuZ3vTy34kOpzL1Yg3b3VYF8w==
+  dependencies:
+    sweetalert2 "^11.7.5"
+
 react@^18:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
@@ -3635,6 +3642,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+sweetalert2@^11.7.5:
+  version "11.10.4"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.10.4.tgz#48fc0c21f008f4d4f7c92da6a96c0fde33148d64"
+  integrity sha512-MOVRuEW/yQsyzgkaiHqAJcYKxW3vhtE5o3Skp6vZdyJejCOWo4FOicbjRfvqHAXTyTMuwDHA+0lYbO6BiHl1Gw==
 
 tailwindcss@^3.3.0:
   version "3.3.7"
