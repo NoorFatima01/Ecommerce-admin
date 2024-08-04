@@ -67,3 +67,6 @@ export async function getStaticProps({ params }) {
 ## Server Side Fetching
 
 Now there is something known as `request time`. This is when the data is requested after the website has been rendered. The request is sent to the server the data is fetched on the server and sent to the client. In Next js, getServerSideProps
+
+Understanding these rendering techniques in App Router: [in this stack overflow question](https://stackoverflow.com/questions/76267351/how-to-fetch-data-server-side-in-the-latest-next-js-tried-getstaticprops-but-it)
+
